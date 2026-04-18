@@ -1,0 +1,10 @@
+================================================================================
+Carpeta: src/app/pages/
+Propósito:
+  Pantallas completas cargadas por rutas (home, catálogo, tienda, contacto).
+
+Convención de nombres:
+  - `*.page.ts`   -> lógica del componente.
+  - `*.page.html` -> plantilla.
+  - `*.page.scss` -> estilos encapsulados (donde aplica).
+================================================================================

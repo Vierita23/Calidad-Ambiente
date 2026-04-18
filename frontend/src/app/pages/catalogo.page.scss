@@ -1,0 +1,258 @@
+/* =============================================================================
+   Archivo: pages/catalogo.page.scss
+   Propósito: Catálogo “premium” (sombras suaves, hover con elevación y zoom leve).
+   ============================================================================= */
+.page {
+  padding: 1.75rem 1.25rem 2.75rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page__head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.35rem;
+}
+
+.page__title {
+  margin: 0 0 0.35rem;
+  letter-spacing: -0.03em;
+  font-size: clamp(1.55rem, 2.6vw, 2.05rem);
+}
+
+.page__subtitle {
+  margin: 0;
+  color: color-mix(in srgb, var(--dt-ink) 72%, transparent);
+  max-width: 72ch;
+  line-height: 1.55;
+}
+
+.page__search-hint {
+  margin: 0.65rem 0 0;
+  font-size: 0.9rem;
+  color: color-mix(in srgb, var(--dt-ink) 70%, transparent);
+}
+
+.filtro {
+  display: grid;
+  gap: 0.35rem;
+  min-width: 250px;
+}
+
+.filtro__label {
+  font-size: 0.85rem;
+  font-weight: 750;
+  color: color-mix(in srgb, var(--dt-ink) 78%, transparent);
+}
+
+.filtro__select {
+  border-radius: 14px;
+  border: 1px solid color-mix(in srgb, var(--dt-ink) 14%, transparent);
+  padding: 0.7rem 0.8rem;
+  background: color-mix(in srgb, white 92%, var(--dt-surface));
+  box-shadow: 0 10px 30px color-mix(in srgb, var(--dt-primary) 8%, transparent);
+}
+
+.hint {
+  margin: 0;
+  color: color-mix(in srgb, var(--dt-ink) 70%, transparent);
+}
+
+.alert {
+  margin: 0;
+  padding: 0.85rem 1rem;
+  border-radius: 14px;
+  border: 1px solid color-mix(in srgb, var(--dt-accent) 45%, transparent);
+  background: color-mix(in srgb, var(--dt-accent) 10%, white);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.05rem;
+}
+
+.tile {
+  position: relative;
+  border: 1px solid color-mix(in srgb, var(--dt-ink) 10%, transparent);
+  border-radius: 22px;
+  overflow: hidden;
+  background: radial-gradient(900px 240px at 20% 0%, color-mix(in srgb, white 92%, var(--dt-surface)), white);
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  box-shadow: 0 18px 50px color-mix(in srgb, var(--dt-primary) 10%, transparent);
+  transform: translateZ(0);
+  transition:
+    transform 220ms ease,
+    box-shadow 220ms ease,
+    border-color 220ms ease;
+}
+
+.tile:hover {
+  transform: translateY(-4px);
+  border-color: color-mix(in srgb, var(--dt-accent) 35%, transparent);
+  box-shadow:
+    0 26px 70px color-mix(in srgb, var(--dt-primary) 14%, transparent),
+    0 10px 30px color-mix(in srgb, var(--dt-accent) 12%, transparent);
+}
+
+.tile__media-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.tile__media {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  /* Área retrato (típica de móvil/tablet): evita el recorte “panorámico” del catálogo anterior. */
+  aspect-ratio: 3 / 4;
+  background: radial-gradient(
+    120% 80% at 50% 20%,
+    color-mix(in srgb, white 94%, var(--dt-surface)),
+    color-mix(in srgb, var(--dt-surface) 55%, white)
+  );
+}
+
+.tile__media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+  transform: scale(1);
+  transition: transform 520ms ease;
+}
+
+.tile:hover .tile__media img {
+  transform: scale(1.04);
+}
+
+.tile__shine {
+  position: absolute;
+  inset: -40% -40% auto auto;
+  z-index: 1;
+  width: 55%;
+  height: 120%;
+  transform: rotate(18deg);
+  pointer-events: none;
+  background: linear-gradient(
+    120deg,
+    color-mix(in srgb, white 0%, transparent),
+    color-mix(in srgb, white 55%, transparent),
+    color-mix(in srgb, white 0%, transparent)
+  );
+  opacity: 0.0;
+  transition: opacity 220ms ease, transform 700ms ease;
+}
+
+.tile:hover .tile__shine {
+  opacity: 0.35;
+  transform: rotate(18deg) translateX(-18px);
+}
+
+.tile__body {
+  padding: 1rem 1.05rem 1.15rem;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.55rem;
+  flex: 1 1 auto;
+}
+
+.tile__title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: var(--dt-ink);
+}
+
+.tile__price {
+  margin: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 0.45rem;
+}
+
+.tile__cta {
+  margin-top: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.55rem 1rem;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 0.82rem;
+  text-decoration: none;
+  text-align: center;
+  color: white;
+  background: var(--dt-primary);
+  box-shadow: 0 8px 22px color-mix(in srgb, var(--dt-primary) 30%, transparent);
+  transition:
+    filter 160ms ease,
+    transform 160ms ease;
+}
+
+.tile__cta:hover {
+  filter: brightness(1.06);
+  transform: translateY(-1px);
+}
+
+.tile__categ {
+  margin: 0.15rem 0 0;
+  text-align: center;
+  font-size: 0.78rem;
+  font-weight: 650;
+  color: color-mix(in srgb, var(--dt-ink) 52%, transparent);
+}
+
+.tile__money {
+  font-weight: 900;
+  font-size: 1.12rem;
+  letter-spacing: -0.02em;
+  background: var(--dt-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@media (max-width: 1020px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 820px) {
+  .page__head {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tile,
+  .tile__media img,
+  .tile__shine {
+    transition: none;
+  }
+
+  .tile:hover {
+    transform: none;
+  }
+
+  .tile:hover .tile__media img {
+    transform: none;
+  }
+}

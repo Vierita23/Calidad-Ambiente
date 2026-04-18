@@ -1,0 +1,69 @@
+/* =============================================================================
+   Archivo: pages/tienda.page.scss
+   Propósito: Tarjetas informativas coherentes con el resto del sitio.
+   ============================================================================= */
+.page {
+  padding: 1.75rem 1.25rem 2.5rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.page__head {
+  margin-bottom: 1.25rem;
+}
+
+.page__title {
+  margin: 0 0 0.35rem;
+  letter-spacing: -0.02em;
+}
+
+.page__subtitle {
+  margin: 0;
+  color: color-mix(in srgb, var(--dt-ink) 72%, transparent);
+  max-width: 85ch;
+  line-height: 1.45;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.card {
+  border: 1px solid color-mix(in srgb, var(--dt-ink) 12%, transparent);
+  background: color-mix(in srgb, var(--dt-surface) 88%, white);
+  border-radius: 18px;
+  padding: 1.1rem 1.1rem 1.15rem;
+}
+
+.card__title {
+  margin: 0 0 0.55rem;
+  font-size: 1.05rem;
+}
+
+.card__text {
+  margin: 0;
+  line-height: 1.55;
+  color: color-mix(in srgb, var(--dt-ink) 78%, transparent);
+}
+
+.muted {
+  display: inline-block;
+  margin-top: 0.5rem;
+  color: color-mix(in srgb, var(--dt-ink) 62%, transparent);
+  font-size: 0.95rem;
+}
+
+.list {
+  margin: 0;
+  padding-left: 1.1rem;
+  line-height: 1.55;
+  color: color-mix(in srgb, var(--dt-ink) 78%, transparent);
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

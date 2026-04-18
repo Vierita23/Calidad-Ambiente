@@ -1,0 +1,71 @@
+<!--
+  Archivo: pages/catalogo.page.html
+  Propósito: UI del catálogo (filtro + tarjetas “premium” con precio multi-moneda).
+-->
+<section class="page">
+  <header class="page__head">
+    <div>
+      <h1 class="page__title">Catálogo</h1>
+      <p class="page__subtitle">
+        Catálogo ampliado con modelos reales, precios en dólares y fotos desde Wikimedia Commons.
+      </p>
+      @if (terminoBusqueda()) {
+        <p class="page__search-hint" role="status">
+          Resultados para «<strong>{{ terminoBusqueda() }}</strong>» (nombre, marca o descripción).
+        </p>
+      }
+    </div>
+
+    <label class="filtro">
+      <span class="filtro__label">Categoría</span>
+      <select
+        class="filtro__select"
+        [value]="filtro()"
+        (change)="onCambioFiltro(($any($event.target).value))"
+      >
+        @for (op of opcionesFiltro; track op.valor) {
+          <option [value]="op.valor">{{ op.etiqueta }}</option>
+        }
+      </select>
+    </label>
+  </header>
+
+  @if (cargando()) {
+    <p class="hint" role="status">Cargando productos…</p>
+  } @else if (error(); as mensaje) {
+    <p class="alert" role="alert">{{ mensaje }}</p>
+  } @else if (productos().length === 0) {
+    <p class="hint" role="status">No hay productos para mostrar con este filtro.</p>
+  } @else {
+    <div class="grid" role="list">
+      @for (p of productos(); track p.id) {
+        <article class="tile" role="listitem">
+          <a class="tile__media-link" [routerLink]="['/producto', p.id]">
+            <div class="tile__media">
+              <img
+                [src]="p.imagen_url"
+                [alt]="'Foto de ' + p.nombre"
+                loading="lazy"
+                decoding="async"
+                referrerpolicy="no-referrer"
+              />
+              <div class="tile__shine" aria-hidden="true"></div>
+            </div>
+          </a>
+          <div class="tile__body">
+            <h2 class="tile__title">{{ p.nombre }}</h2>
+            <p class="tile__price">
+              @if ((p.moneda ?? 'USD') === 'USD') {
+                <span class="tile__money">{{ +p.precio | currency: 'USD' : 'symbol-narrow' : '1.0-0' }}</span>
+              } @else {
+                <span class="tile__money">{{ +p.precio | number: '1.2-2' }} {{ p.moneda }}</span>
+              }
+            </p>
+            <a class="tile__cta" [routerLink]="['/producto', p.id]">Ver producto</a>
+            <p class="tile__categ">{{ p.categoria_display }}</p>
+          </div>
+        </article>
+      }
+    </div>
+  }
+</section>

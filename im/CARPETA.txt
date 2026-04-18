@@ -1,0 +1,12 @@
+================================================================================
+Carpeta: im/
+Propósito:
+  Contiene activos de marca (logo) usados como referencia visual para la web.
+
+Archivo principal:
+  LOGO-DT-TECHNOLOGY.svg
+
+Nota para el equipo:
+  El logo se copia también a `frontend/public/assets/` para que Angular lo sirva
+  como archivo estático en el navegador.
+================================================================================

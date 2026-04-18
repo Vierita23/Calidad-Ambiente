@@ -1,0 +1,10 @@
+================================================================================
+Carpeta: src/app/core/
+Propósito:
+  Servicios y utilidades “transversales” (no pertenecen a una sola pantalla).
+
+Archivos actuales:
+  - producto.service.ts   -> cliente HTTP del catálogo.
+  - whatsapp.config.ts    -> número internacional para `wa.me`.
+  - whatsapp.util.ts      -> helpers para construir/abrir enlaces de WhatsApp.
+================================================================================

@@ -1,0 +1,18 @@
+================================================================================
+Carpeta: backend/
+Propósito:
+  API REST con Django + Django REST Framework, conectada a PostgreSQL.
+
+Subcarpetas:
+  - `config/`  -> ajustes globales (settings, urls, wsgi/asgi).
+  - `catalog/` -> app del negocio (modelo Producto, serializers, vistas, rutas).
+
+Arranque en Docker:
+  El `Dockerfile` ejecuta `entrypoint.sh`, que corre migraciones y luego Gunicorn.
+
+Desarrollo local (sin Docker):
+  - Crear entorno virtual, instalar `requirements.txt`
+  - Exportar variables POSTGRES_* o apuntar a tu instancia local
+  - `python manage.py migrate`
+  - `python manage.py runserver`
+================================================================================

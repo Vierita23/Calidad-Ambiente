@@ -1,0 +1,311 @@
+/* =============================================================================
+   Archivo: layout/app-header.scss
+   Propósito: Cabecera en dos franjas (blanca + barra categorías oscura).
+   ============================================================================= */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: white;
+  border-bottom: 1px solid color-mix(in srgb, var(--dt-ink) 10%, transparent);
+  box-shadow: 0 8px 28px color-mix(in srgb, var(--dt-primary) 8%, transparent);
+}
+
+.header__top {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 1rem 1.25rem;
+  padding: 0.85rem 1.25rem;
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+.header__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  text-decoration: none;
+  color: var(--dt-primary);
+  min-width: 0;
+}
+
+.header__logo {
+  height: 38px;
+  width: auto;
+  flex-shrink: 0;
+  display: block;
+}
+
+.header__title {
+  font-weight: 800;
+  font-size: clamp(0.95rem, 2.2vw, 1.15rem);
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.header__search {
+  display: flex;
+  align-items: stretch;
+  max-width: 520px;
+  width: 100%;
+  margin: 0 auto;
+  border: 1px solid color-mix(in srgb, var(--dt-ink) 16%, transparent);
+  border-radius: 999px;
+  overflow: hidden;
+  background: color-mix(in srgb, white 96%, var(--dt-surface));
+  box-shadow: inset 0 1px 2px color-mix(in srgb, var(--dt-ink) 6%, transparent);
+}
+
+.header__search-input {
+  flex: 1 1 auto;
+  border: 0;
+  padding: 0.65rem 1rem;
+  font-size: 0.95rem;
+  min-width: 0;
+  background: transparent;
+  color: var(--dt-ink);
+}
+
+.header__search-input::placeholder {
+  color: color-mix(in srgb, var(--dt-ink) 48%, transparent);
+}
+
+.header__search-input:focus {
+  outline: none;
+}
+
+.header__search:focus-within {
+  border-color: color-mix(in srgb, var(--dt-primary) 45%, transparent);
+  box-shadow:
+    inset 0 1px 2px color-mix(in srgb, var(--dt-ink) 6%, transparent),
+    0 0 0 3px color-mix(in srgb, var(--dt-primary) 18%, transparent);
+}
+
+.header__search-btn {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  border: 0;
+  cursor: pointer;
+  background: var(--dt-primary);
+  color: white;
+  transition: background 160ms ease;
+}
+
+.header__search-btn:hover {
+  background: color-mix(in srgb, var(--dt-primary) 88%, black);
+}
+
+.header__tools {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  justify-self: end;
+}
+
+.header__tool {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 12px;
+  color: color-mix(in srgb, var(--dt-ink) 82%, transparent);
+  text-decoration: none;
+  transition:
+    background 160ms ease,
+    color 160ms ease;
+}
+
+.header__tool:hover {
+  background: color-mix(in srgb, var(--dt-primary) 8%, white);
+  color: var(--dt-primary);
+}
+
+.header__cart {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-left: 0.25rem;
+  padding: 0.35rem 0.5rem 0.35rem 0.65rem;
+  border-radius: 14px;
+  text-decoration: none;
+  color: var(--dt-ink);
+  font-weight: 750;
+  font-size: 0.92rem;
+  position: relative;
+}
+
+.header__cart:hover {
+  background: color-mix(in srgb, var(--dt-accent) 8%, white);
+}
+
+.header__cart-total {
+  letter-spacing: -0.02em;
+}
+
+.header__cart-badge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  min-width: 1.1rem;
+  height: 1.1rem;
+  padding: 0 4px;
+  border-radius: 999px;
+  font-size: 0.65rem;
+  font-weight: 800;
+  line-height: 1.1rem;
+  text-align: center;
+  background: var(--dt-accent);
+  color: white;
+}
+
+.header__icon-svg {
+  width: 22px;
+  height: 22px;
+  display: block;
+}
+
+.header__icon-svg--bag {
+  width: 24px;
+  height: 24px;
+}
+
+/* Barra de navegación oscura */
+.header__nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  justify-content: center;
+  gap: 0;
+  padding: 0 0.5rem;
+  background: var(--dt-primary);
+  border-top: 1px solid color-mix(in srgb, white 12%, var(--dt-primary));
+}
+
+.header__nav-link {
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.92);
+  font-weight: 700;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.85rem 1rem;
+  border-radius: 0;
+  transition: background 160ms ease;
+}
+
+.header__nav-link:hover {
+  background: color-mix(in srgb, white 10%, transparent);
+}
+
+.header__nav-link.is-active {
+  background: color-mix(in srgb, var(--dt-accent) 35%, transparent);
+  color: white;
+}
+
+.header__drop {
+  position: relative;
+  border: 0;
+}
+
+.header__drop-summary {
+  list-style: none;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.92);
+  font-weight: 700;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.85rem 1rem;
+  user-select: none;
+}
+
+.header__drop-summary::-webkit-details-marker {
+  display: none;
+}
+
+.header__drop-summary::after {
+  content: '';
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-left: 0.35rem;
+  vertical-align: middle;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid rgba(255, 255, 255, 0.75);
+}
+
+.header__drop:hover .header__drop-summary,
+.header__drop[open] .header__drop-summary {
+  background: color-mix(in srgb, white 10%, transparent);
+}
+
+.header__drop-panel {
+  position: absolute;
+  left: 0;
+  top: 100%;
+  min-width: 200px;
+  padding: 0.4rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 16px 40px color-mix(in srgb, var(--dt-ink) 22%, transparent);
+  z-index: 50;
+}
+
+.header__drop-panel a {
+  display: block;
+  padding: 0.55rem 0.75rem;
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--dt-ink);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.header__drop-panel a:hover {
+  background: color-mix(in srgb, var(--dt-primary) 8%, white);
+}
+
+@media (max-width: 900px) {
+  .header__top {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'brand'
+      'search'
+      'tools';
+  }
+
+  .header__brand {
+    grid-area: brand;
+  }
+
+  .header__search {
+    grid-area: search;
+    max-width: none;
+  }
+
+  .header__tools {
+    grid-area: tools;
+    justify-self: center;
+  }
+}
+
+@media (max-width: 560px) {
+  .header__nav {
+    justify-content: flex-start;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+
+  .header__nav-link,
+  .header__drop-summary {
+    white-space: nowrap;
+  }
+}

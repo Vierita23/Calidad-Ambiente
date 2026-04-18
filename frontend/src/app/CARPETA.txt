@@ -1,0 +1,11 @@
+================================================================================
+Carpeta: src/app/
+Propósito:
+  Código fuente principal de Angular (componentes, rutas, servicios).
+
+Organización sugerida:
+  - `core/`     -> servicios transversales (HTTP hacia el API).
+  - `models/`   -> tipos TypeScript compartidos.
+  - `layout/`   -> piezas repetidas (cabecera/pie).
+  - `pages/`    -> pantallas enlazadas por el router.
+================================================================================

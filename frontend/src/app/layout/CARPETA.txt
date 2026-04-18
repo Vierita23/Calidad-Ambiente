@@ -1,0 +1,10 @@
+================================================================================
+Carpeta: src/app/layout/
+Propósito:
+  Componentes visuales repetidos en casi todas las rutas (cabecera/pie).
+
+Archivos:
+  - app-header.*     -> logo + navegación.
+  - app-footer.*     -> cierre + enlaces rápidos.
+  - whatsapp-fab.*   -> botón flotante global de WhatsApp.
+================================================================================

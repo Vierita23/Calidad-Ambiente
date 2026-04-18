@@ -1,0 +1,47 @@
+<section class="detalle page">
+  <nav class="detalle__crumb" aria-label="Migas de pan">
+    <a routerLink="/">Inicio</a>
+    <span aria-hidden="true"> / </span>
+    <a routerLink="/catalogo">Catálogo</a>
+    @if (producto(); as p) {
+      <span aria-hidden="true"> / </span>
+      <span>{{ p.nombre }}</span>
+    }
+  </nav>
+
+  @if (cargando()) {
+    <p class="detalle__hint" role="status">Cargando ficha del equipo…</p>
+  } @else if (error(); as mensaje) {
+    <p class="detalle__alert" role="alert">{{ mensaje }}</p>
+    <a class="detalle__back" routerLink="/catalogo">Volver al catálogo</a>
+  } @else if (producto(); as p) {
+    @if (feedback()) {
+      <p class="detalle__ok" role="status">{{ feedback() }}</p>
+    }
+    <div class="detalle__grid">
+      <div class="detalle__media">
+        <img [src]="p.imagen_url" [alt]="'Foto de ' + p.nombre" loading="eager" decoding="async" referrerpolicy="no-referrer" />
+      </div>
+      <div class="detalle__info">
+        <p class="detalle__categ">{{ p.categoria_display }}</p>
+        <h1 class="detalle__title">{{ p.nombre }}</h1>
+        @if (p.marca) {
+          <p class="detalle__marca">Marca: <strong>{{ p.marca }}</strong></p>
+        }
+        <p class="detalle__precio">
+          @if ((p.moneda ?? 'USD') === 'USD') {
+            {{ +p.precio | currency: 'USD' : 'symbol-narrow' : '1.0-0' }}
+          } @else {
+            {{ +p.precio | number: '1.2-2' }} {{ p.moneda }}
+          }
+        </p>
+        <p class="detalle__desc">{{ p.descripcion }}</p>
+        <div class="detalle__actions">
+          <button type="button" class="detalle__btn-cart" (click)="anadirAlCarrito()">Añadir al carrito</button>
+          <a class="detalle__btn-ghost" routerLink="/catalogo">Seguir comprando</a>
+        </div>
+        <a class="detalle__link-cart" routerLink="/carrito">Ver carrito →</a>
+      </div>
+    </div>
+  }
+</section>

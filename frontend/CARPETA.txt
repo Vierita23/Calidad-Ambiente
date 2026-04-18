@@ -1,0 +1,16 @@
+================================================================================
+Carpeta: frontend/
+Propósito:
+  Aplicación Angular (UI) del sitio comercial + informativo.
+
+Archivos clave:
+  - `src/app/`        -> componentes, rutas y servicios.
+  - `public/assets/`  -> logo y otros estáticos públicos.
+  - `proxy.conf.json` -> en desarrollo (`ng serve`) reenvía `/api` a Django.
+  - `nginx.conf`      -> en Docker, Nginx hace el mismo rol de proxy hacia `backend`.
+
+Comandos típicos:
+  - `npm install` (si aún no instalaste dependencias)
+  - `npm start`   (sirve en http://localhost:4200 con proxy a http://localhost:8000)
+  - `npm run build` (genera `dist/frontend` para producción)
+================================================================================

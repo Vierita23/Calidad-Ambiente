@@ -1,0 +1,102 @@
+<!--
+  Archivo: pages/contacto.page.html
+  Propósito: Datos de contacto + formulario conectado a WhatsApp (wa.me).
+-->
+<section class="page">
+  <header class="page__head">
+    <h1 class="page__title">Contacto</h1>
+    <p class="page__subtitle">
+      Escríbenos por WhatsApp: al enviar el formulario se abrirá el chat con tu mensaje listo para enviar.
+    </p>
+  </header>
+
+  <div class="layout">
+    <section class="panel" aria-label="Datos de contacto">
+      <h2 class="panel__title">Hablemos</h2>
+      <ul class="facts">
+        <li><span class="k">WhatsApp</span><span class="v">0959247699</span></li>
+        <li><span class="k">Correo</span><span class="v">hola@dt-technology.demo</span></li>
+        <li><span class="k">Horario</span><span class="v">Lun–Sáb · 10:00 a 20:00</span></li>
+      </ul>
+      <p class="panel__note">
+        Si el número no abre en tu país, revisa el formato internacional en
+        <code>frontend/src/app/core/whatsapp.config.ts</code>.
+      </p>
+    </section>
+
+    <section class="panel" aria-label="Formulario a WhatsApp">
+      <h2 class="panel__title">Solicitud por WhatsApp</h2>
+
+      @if (aviso(); as texto) {
+        <p class="alert" role="alert">{{ texto }}</p>
+      }
+
+      <form class="form" (submit)="$event.preventDefault(); enviarPorWhatsApp()">
+        <label class="field">
+          <span class="field__label">Nombre</span>
+          <input
+            class="field__input"
+            name="nombre"
+            type="text"
+            autocomplete="name"
+            placeholder="Ej. Jesús"
+            [(ngModel)]="nombre"
+            required
+          />
+        </label>
+
+        <label class="field">
+          <span class="field__label">Correo (opcional)</span>
+          <input
+            class="field__input"
+            name="correo"
+            type="email"
+            autocomplete="email"
+            placeholder="Ej. correo@dominio.com"
+            [(ngModel)]="correo"
+          />
+        </label>
+
+        <label class="field">
+          <span class="field__label">Mensaje</span>
+          <textarea
+            class="field__input field__input--area"
+            name="mensaje"
+            rows="5"
+            placeholder="Cuéntanos qué modelo te interesa"
+            [(ngModel)]="mensaje"
+            required
+          ></textarea>
+        </label>
+
+        <button class="btn" type="submit" [disabled]="enviando()">
+          {{ enviando() ? 'Abriendo WhatsApp…' : 'Enviar por WhatsApp' }}
+        </button>
+      </form>
+    </section>
+  </div>
+
+  <!-- Anclas para enlaces del pie (FAQ / legales / soporte). -->
+  <section class="anchors" id="faq" aria-label="Preguntas frecuentes">
+    <h2 class="anchors__h">Preguntas frecuentes</h2>
+    <p class="anchors__p">
+      Aquí puedes documentar políticas de compra, garantías y tiempos de entrega. Este bloque existe para que
+      los enlaces del footer funcionen.
+    </p>
+  </section>
+
+  <section class="anchors" id="terminos" aria-label="Términos y condiciones">
+    <h2 class="anchors__h">Términos y condiciones</h2>
+    <p class="anchors__p">
+      Texto legal pendiente. Mientras tanto, este ancla permite navegar desde el pie de página sin errores.
+    </p>
+  </section>
+
+  <section class="anchors" id="soporte" aria-label="Soporte técnico">
+    <h2 class="anchors__h">Soporte técnico</h2>
+    <p class="anchors__p">
+      Define aquí canales de postventa, diagnóstico y RMA. El enlace “Soporte Técnico” del footer apunta a esta
+      sección.
+    </p>
+  </section>
+</section>

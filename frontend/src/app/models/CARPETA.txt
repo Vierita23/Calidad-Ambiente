@@ -1,0 +1,8 @@
+================================================================================
+Carpeta: src/app/models/
+Propósito:
+  Tipos TypeScript compartidos (contratos del JSON del API).
+
+Archivo actual:
+  - producto.ts -> interfaz `Producto` y tipo `CategoriaProducto`.
+================================================================================

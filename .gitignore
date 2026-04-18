@@ -1,0 +1,27 @@
+# =============================================================================
+# Archivo: .gitignore
+# Carpeta: raíz del repositorio
+# Propósito: Evita versionar artefactos locales (dependencias, builds, entornos).
+# =============================================================================
+
+# Python / Django
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+backend/staticfiles/
+
+# Node / Angular
+frontend/node_modules/
+frontend/dist/
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+Thumbs.db
+Desktop.ini
+
+# Env
+.env

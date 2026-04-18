@@ -1,0 +1,14 @@
+# =============================================================================
+# Archivo: .dockerignore
+# Carpeta: backend/
+# Propósito: Evita copiar archivos innecesarios al contexto de build de Docker.
+# =============================================================================
+__pycache__
+*.pyc
+*.pyo
+.pytest_cache
+.mypy_cache
+.venv
+venv
+.env
+db.sqlite3

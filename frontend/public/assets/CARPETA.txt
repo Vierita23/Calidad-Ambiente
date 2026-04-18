@@ -1,0 +1,8 @@
+================================================================================
+Carpeta: frontend/public/assets/
+Propósito:
+  Archivos estáticos públicos servidos tal cual por Angular/Nginx.
+
+Contenido:
+  - logo-dt-technology.svg -> copia del logo en `im/LOGO-DT-TECHNOLOGY.svg`
+================================================================================

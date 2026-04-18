@@ -1,0 +1,44 @@
+<section class="cart page">
+  <header class="cart__head">
+    <h1 class="cart__title">Carrito</h1>
+    <a class="cart__back" routerLink="/catalogo">← Seguir comprando</a>
+  </header>
+
+  @if (carrito.lineas().length === 0) {
+    <p class="cart__empty">Tu carrito está vacío.</p>
+    <a class="cart__cta" routerLink="/catalogo">Ir al catálogo</a>
+  } @else {
+    <ul class="cart__list">
+      @for (l of carrito.lineas(); track l.producto.id) {
+        <li class="cart__row">
+          <a class="cart__thumb" [routerLink]="['/producto', l.producto.id]">
+            <img [src]="l.producto.imagen_url" alt="" width="72" height="72" loading="lazy" referrerpolicy="no-referrer" />
+          </a>
+          <div class="cart__main">
+            <a class="cart__name" [routerLink]="['/producto', l.producto.id]">{{ l.producto.nombre }}</a>
+            <p class="cart__meta">{{ l.producto.categoria_display }} · Cantidad: {{ l.cantidad }}</p>
+          </div>
+          <p class="cart__price">
+            @if ((l.producto.moneda ?? 'USD') === 'USD') {
+              {{ +l.producto.precio * l.cantidad | currency: 'USD' : 'symbol-narrow' : '1.0-0' }}
+            } @else {
+              {{ +l.producto.precio * l.cantidad | number: '1.2-2' }} {{ l.producto.moneda }}
+            }
+          </p>
+          <button type="button" class="cart__remove" (click)="quitar(l.producto.id)" aria-label="Quitar del carrito">
+            Quitar
+          </button>
+        </li>
+      }
+    </ul>
+    <footer class="cart__footer">
+      <p class="cart__total">
+        Total:
+        <strong>{{
+          carrito.importeTotal() | currency: 'USD' : 'symbol-narrow' : '1.0-0'
+        }}</strong>
+      </p>
+      <button type="button" class="cart__clear" (click)="vaciar()">Vaciar carrito</button>
+    </footer>
+  }
+</section>

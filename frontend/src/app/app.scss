@@ -1,0 +1,156 @@
+/* =============================================================================
+   Archivo: app.scss
+   Propósito: Layout global (sticky footer) para que el pie quede abajo aunque
+              haya pocas secciones en una página.
+   ============================================================================= */
+:host {
+  display: block;
+  min-height: 100dvh;
+}
+
+/* -----------------------------------------------------------------------------
+   Intro con logo — 2 s, curvas suaves, estilo “glass” elegante
+   ----------------------------------------------------------------------------- */
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  padding: clamp(1rem, 4vw, 2rem);
+  background:
+    radial-gradient(ellipse 120% 90% at 50% 110%, color-mix(in srgb, var(--dt-primary) 9%, transparent), transparent 58%),
+    radial-gradient(ellipse 70% 55% at 50% -5%, color-mix(in srgb, var(--dt-accent) 7%, transparent), transparent 52%),
+    linear-gradient(168deg, #fbfcff 0%, #f3f5fc 38%, #ffffff 100%);
+  animation: splash-veil 2s cubic-bezier(0.33, 1, 0.68, 1) forwards;
+}
+
+.splash__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.35rem;
+  padding: clamp(1.75rem, 5vw, 2.75rem) clamp(2rem, 6vw, 3.25rem);
+  max-width: min(92vw, 380px);
+  border-radius: 32px;
+  text-align: center;
+  background: color-mix(in srgb, white 72%, transparent);
+  border: 1px solid color-mix(in srgb, white 80%, var(--dt-primary) 12%);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--dt-primary) 6%, transparent),
+    0 32px 90px color-mix(in srgb, var(--dt-primary) 14%, transparent),
+    inset 0 1px 0 color-mix(in srgb, white 90%, transparent);
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  animation: splash-content 2s cubic-bezier(0.33, 1, 0.68, 1) forwards;
+}
+
+.splash__logo {
+  width: min(132px, 32vw);
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 16px 36px color-mix(in srgb, var(--dt-primary) 18%, transparent));
+}
+
+.splash__brand {
+  font-size: clamp(1.05rem, 3.2vw, 1.42rem);
+  font-weight: 750;
+  letter-spacing: 0.06em;
+  text-transform: none;
+  background: var(--dt-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: splash-brand 1.55s cubic-bezier(0.22, 1, 0.36, 1) 0.42s both;
+}
+
+/* Capa completa: visible y luego desvanecida al cerrar */
+@keyframes splash-veil {
+  0%,
+  70% {
+    opacity: 1;
+    visibility: visible;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+/* Tarjeta: sube suave, se mantiene, sale con ligero ascenso */
+@keyframes splash-content {
+  0% {
+    opacity: 0;
+    transform: translateY(36px) scale(0.92);
+  }
+  14% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  70% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.97);
+  }
+}
+
+/* Nombre de marca: entra un poco después, tipografía “respira” */
+@keyframes splash-brand {
+  0% {
+    opacity: 0;
+    transform: translateY(14px);
+    letter-spacing: 0.2em;
+    filter: blur(5px);
+  }
+  55% {
+    opacity: 1;
+    transform: translateY(0);
+    letter-spacing: 0.06em;
+    filter: blur(0);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    letter-spacing: 0.04em;
+    filter: blur(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .splash,
+  .splash__inner,
+  .splash__brand {
+    animation: none !important;
+  }
+
+  .splash {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .splash__inner {
+    opacity: 1;
+    transform: none;
+  }
+
+  .splash__brand {
+    opacity: 1;
+    letter-spacing: 0.04em;
+    filter: none;
+  }
+}
+
+.shell {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.shell__main {
+  flex: 1 1 auto;
+  /* Evita que el FAB tape contenido al final de la página en móviles. */
+  padding-bottom: 5.5rem;
+}

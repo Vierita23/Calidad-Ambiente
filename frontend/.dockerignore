@@ -1,0 +1,8 @@
+# =============================================================================
+# Archivo: .dockerignore
+# Carpeta: frontend/
+# Propósito: Reduce el contexto de build de Docker (más rápido y más seguro).
+# =============================================================================
+node_modules
+dist
+.angular

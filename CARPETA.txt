@@ -1,0 +1,23 @@
+================================================================================
+Carpeta: raíz del repositorio (Calidad-Ambiente)
+Propósito:
+  Proyecto full-stack demo: Angular (UI) + Django (API) + PostgreSQL (datos),
+  orquestado con Docker Compose.
+
+Carpetas principales:
+  - im/        -> logo fuente (referencia de marca y colores).
+  - frontend/ -> aplicación Angular (última versión instalada por CLI en tu máquina).
+  - backend/  -> API Django REST Framework.
+
+Archivo clave:
+  - docker-compose.yml -> levanta `db`, `backend` y `frontend`.
+
+Cómo ejecutarlo:
+  - `docker compose up --build`
+  - Web: http://localhost:8080
+  - API (host): http://localhost:8001/api/productos/
+
+Nota Docker:
+  PostgreSQL del compose no expone 5432 en tu PC (solo red interna entre contenedores),
+  para que no choque con otro Postgres instalado localmente.
+================================================================================

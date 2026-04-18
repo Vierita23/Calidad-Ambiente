@@ -1,0 +1,80 @@
+# =============================================================================
+# Archivo: docker-compose.yml
+# Carpeta: raíz del repositorio
+# Propósito: Orquesta PostgreSQL + Django + Angular (Nginx) con una sola orden.
+#
+# Cómo usarlo (desde la raíz del proyecto):
+#   docker compose up --build
+#
+# Puertos expuestos al host (por defecto):
+# - 8080 -> sitio web (Angular compilado + proxy /api hacia el backend)
+# - 8001 -> API Django en tu PC (mapea a 8000 dentro del contenedor). Si 8001
+#           también estuviera ocupado, cámbialo aquí (ej. "8002:8000").
+#
+# Nota importante (Windows / dev):
+# PostgreSQL NO se publica en el host (no hay `ports:` en `db`) para evitar el error
+# "Bind for 0.0.0.0:5432 failed: port is already allocated" cuando ya tienes otro
+# Postgres local u otra app usando 5432. El backend sigue conectando a `db:5432`
+# por la red interna de Docker.
+#
+# Si necesitas conectar desde tu PC con DBeaver/pgAdmin, descomenta el bloque
+# opcional al final de este archivo (mapea 5433 -> 5432).
+# =============================================================================
+services:
+  # ---------------------------------------------------------------------------
+  # Base de datos PostgreSQL
+  # ---------------------------------------------------------------------------
+  db:
+    image: postgres:16-alpine
+    container_name: calidad_ambiente_db
+    environment:
+      POSTGRES_DB: tienda
+      POSTGRES_USER: tienda
+      POSTGRES_PASSWORD: tienda
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tienda -d tienda"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+  # ---------------------------------------------------------------------------
+  # Backend Django (Gunicorn)
+  # ---------------------------------------------------------------------------
+  backend:
+    build:
+      context: ./backend
+    container_name: calidad_ambiente_backend
+    # Sincroniza el código del host con el contenedor (migraciones y cambios sin rebuild).
+    volumes:
+      - ./backend:/app
+    environment:
+      DJANGO_DEBUG: "true"
+      DJANGO_ALLOWED_HOSTS: localhost,127.0.0.1,backend
+      POSTGRES_DB: tienda
+      POSTGRES_USER: tienda
+      POSTGRES_PASSWORD: tienda
+      POSTGRES_HOST: db
+      POSTGRES_PORT: "5432"
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8001:8000"
+
+  # ---------------------------------------------------------------------------
+  # Frontend Angular servido por Nginx (incluye proxy reverso a /api)
+  # ---------------------------------------------------------------------------
+  frontend:
+    build:
+      context: ./frontend
+    container_name: calidad_ambiente_frontend
+    depends_on:
+      - backend
+    ports:
+      # Nota: usamos 8080 para reducir choques con otros servicios en Windows.
+      - "8080:80"
+
+volumes:
+  postgres_data:

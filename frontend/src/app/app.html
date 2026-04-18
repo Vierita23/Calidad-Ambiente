@@ -1,0 +1,27 @@
+<!--
+  Archivo: app.html
+  Propósito: Estructura base del sitio: cabecera + contenido dinámico + pie.
+-->
+@if (splash()) {
+  <div
+    class="splash"
+    role="status"
+    aria-live="polite"
+    aria-label="Cargando marca"
+    (animationend)="onSplashAnimationEnd($event)"
+  >
+    <div class="splash__inner">
+      <img class="splash__logo" src="assets/logo-dt-technology.svg" alt="" width="132" height="132" />
+      <span class="splash__brand">DT Technology</span>
+    </div>
+  </div>
+}
+
+<div class="shell">
+  <app-header />
+  <main class="shell__main" id="contenido-principal">
+    <router-outlet />
+  </main>
+  <app-footer />
+  <app-whatsapp-fab />
+</div>

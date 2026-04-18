@@ -1,0 +1,45 @@
+/* =============================================================================
+   Archivo: styles.scss
+   Carpeta: frontend/src/
+   Propósito: Estilos globales + variables de color basadas en el logo:
+              - Morado: #1b0082
+              - Magenta: #fc004d
+              (extraídos de `im/LOGO-DT-TECHNOLOGY.svg`)
+   ============================================================================= */
+:root {
+  /* Colores principales del logotipo */
+  --dt-primary: #1b0082;
+  --dt-accent: #fc004d;
+
+  /* Degradado principal (coherente con el ícono del logo) */
+  --dt-gradient: linear-gradient(135deg, var(--dt-primary), var(--dt-accent));
+
+  /* Neutros para texto y fondos */
+  --dt-ink: #0b1020;
+  --dt-surface: #f6f7fb;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  color: var(--dt-ink);
+  background: var(--dt-surface);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  line-height: 1.35;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
