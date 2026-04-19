@@ -125,6 +125,44 @@
   color: var(--dt-primary);
 }
 
+.header__fav {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 12px;
+  color: color-mix(in srgb, var(--dt-accent) 85%, black);
+  text-decoration: none;
+  transition:
+    background 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
+}
+
+.header__fav:hover {
+  background: color-mix(in srgb, var(--dt-accent) 12%, white);
+  color: var(--dt-accent);
+  transform: translateY(-1px);
+}
+
+.header__fav-badge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  min-width: 1.1rem;
+  height: 1.1rem;
+  padding: 0 4px;
+  border-radius: 999px;
+  font-size: 0.65rem;
+  font-weight: 800;
+  line-height: 1.1rem;
+  text-align: center;
+  background: var(--dt-primary);
+  color: white;
+}
+
 .header__cart {
   display: inline-flex;
   align-items: center;

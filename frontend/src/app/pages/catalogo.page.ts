@@ -1,15 +1,16 @@
 // =============================================================================
 // Archivo: pages/catalogo.page.ts
 // Carpeta: frontend/src/app/pages/
-// Propósito: Muestra el catálogo consumiendo el API (`ProductoService`).
-// También lee `?categoria=` desde la URL (enlaces del pie y compartir filtros).
+// Propósito: Catálogo con filtros en URL, búsqueda y orden en el API.
 // =============================================================================
 import { CommonModule } from '@angular/common';
-import { Component, computed, DestroyRef, inject, signal } from '@angular/core';
+import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
-import { ProductoService } from '../core/producto.service';
+import { FavoritosService } from '../core/favoritos.service';
+import { OrdenListado, ProductoService } from '../core/producto.service';
+import { ToastService } from '../core/toast.service';
 import { Producto } from '../models/producto';
 
 @Component({
@@ -20,49 +21,33 @@ import { Producto } from '../models/producto';
   styleUrl: './catalogo.page.scss',
 })
 export class CatalogoPage {
-  /** Servicio que encapsula el HTTP hacia Django. */
   private readonly productosApi = inject(ProductoService);
-
-  /** Ruta actual (query params). */
   private readonly route = inject(ActivatedRoute);
-
-  /** Permite cancelar la suscripción al destruir el componente. */
+  private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
+  protected readonly favoritos = inject(FavoritosService);
+  private readonly toast = inject(ToastService);
 
-  /** Respuesta cruda del API (antes del filtro de texto `?q=`). */
-  private readonly productosCrudos = signal<Producto[]>([]);
-
-  /** Texto de búsqueda desde la URL (`?q=`). */
-  protected readonly terminoBusqueda = signal('');
-
-  /** Lista filtrada para la vista. */
-  protected readonly productos = computed(() => {
-    const items = this.productosCrudos();
-    const q = this.terminoBusqueda().trim().toLowerCase();
-    if (!q) {
-      return items;
-    }
-    return items.filter((p) => {
-      const nombre = p.nombre.toLowerCase();
-      const desc = (p.descripcion ?? '').toLowerCase();
-      const marca = (p.marca ?? '').toLowerCase();
-      return nombre.includes(q) || desc.includes(q) || marca.includes(q);
-    });
-  });
-
-  /** Indicador de carga para UX (evita “pantalla vacía” silenciosa). */
+  protected readonly productos = signal<Producto[]>([]);
   protected readonly cargando = signal(true);
-
-  /** Mensaje de error legible si falla la petición. */
   protected readonly error = signal<string | null>(null);
-
-  /** Filtro activo (vacío = todas). */
   protected readonly filtro = signal<string>('');
+  protected readonly terminoBusqueda = signal('');
+  protected readonly orden = signal<OrdenListado>('');
 
-  /** Categorías válidas en backend (debe coincidir con `Producto.Categoria`). */
   private static readonly categoriasValidas = new Set(['', 'celular', 'tablet', 'reloj', 'laptop']);
 
-  /** Opciones del select (valor = código backend; texto = etiqueta humana). */
+  private static readonly ordenesValidos = new Set<OrdenListado>([
+    '',
+    '-creado_en',
+    'precio',
+    '-precio',
+    'nombre',
+    '-nombre',
+    'id',
+    '-id',
+  ]);
+
   protected readonly opcionesFiltro: Array<{ valor: string; etiqueta: string }> = [
     { valor: '', etiqueta: 'Todas las categorías' },
     { valor: 'celular', etiqueta: 'Celulares' },
@@ -71,33 +56,60 @@ export class CatalogoPage {
     { valor: 'laptop', etiqueta: 'Laptops' },
   ];
 
+  protected readonly opcionesOrden: Array<{ valor: OrdenListado; etiqueta: string }> = [
+    { valor: '', etiqueta: 'Orden por defecto' },
+    { valor: '-creado_en', etiqueta: 'Más recientes' },
+    { valor: '-precio', etiqueta: 'Mayor precio' },
+    { valor: 'precio', etiqueta: 'Menor precio' },
+    { valor: 'nombre', etiqueta: 'Nombre A–Z' },
+    { valor: '-nombre', etiqueta: 'Nombre Z–A' },
+  ];
+
   constructor() {
     this.route.queryParamMap.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((pm) => {
-      const raw = (pm.get('categoria') ?? '').trim();
-      const next = CatalogoPage.categoriasValidas.has(raw) ? raw : '';
-      this.filtro.set(next);
+      const rawCat = (pm.get('categoria') ?? '').trim();
+      this.filtro.set(CatalogoPage.categoriasValidas.has(rawCat) ? rawCat : '');
       this.terminoBusqueda.set((pm.get('q') ?? '').trim());
+      const rawOrd = (pm.get('orden') ?? '').trim() as OrdenListado;
+      this.orden.set(CatalogoPage.ordenesValidos.has(rawOrd) ? rawOrd : '');
       this.refrescar();
     });
   }
 
-  /** Disparado por el `<select>` del template. */
   protected onCambioFiltro(valor: string): void {
-    this.filtro.set(valor);
-    this.refrescar();
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { categoria: valor || null },
+      queryParamsHandling: 'merge',
+    });
   }
 
-  /** Consulta el backend y actualiza señales reactivas. */
+  protected onCambioOrden(valor: string): void {
+    const v = (valor || '') as OrdenListado;
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { orden: v || null },
+      queryParamsHandling: 'merge',
+    });
+  }
+
+  protected toggleFavorito(event: MouseEvent, id: number, nombre: string): void {
+    event.preventDefault();
+    event.stopPropagation();
+    const era = this.favoritos.tiene(id);
+    this.favoritos.alternar(id);
+    this.toast.exito(era ? `Quitaste «${nombre}» de favoritos` : `«${nombre}» guardado en favoritos`);
+  }
+
   private refrescar(): void {
     this.cargando.set(true);
     this.error.set(null);
-
-    const categoria = this.filtro();
-    const filtro = categoria ? categoria : undefined;
-
-    this.productosApi.listar(filtro).subscribe({
+    const cat = this.filtro();
+    const q = this.terminoBusqueda();
+    const ord = this.orden();
+    this.productosApi.listar(cat || undefined, q || undefined, ord || undefined).subscribe({
       next: (items) => {
-        this.productosCrudos.set(items);
+        this.productos.set(items);
         this.cargando.set(false);
       },
       error: () => {

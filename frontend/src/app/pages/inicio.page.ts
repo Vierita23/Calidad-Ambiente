@@ -56,11 +56,11 @@ export class InicioPage {
 
   constructor() {
     this.productosApi
-      .listar()
+      .listar(undefined, undefined, '-creado_en')
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (items) => {
-          this.ordenados.set([...items].sort((a, b) => b.id - a.id));
+          this.ordenados.set(items);
           this.cargando.set(false);
         },
         error: () => {

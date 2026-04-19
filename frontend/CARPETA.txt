@@ -6,11 +6,11 @@ Propósito:
 Archivos clave:
   - `src/app/`        -> componentes, rutas y servicios.
   - `public/assets/`  -> logo y otros estáticos públicos.
-  - `proxy.conf.json` -> en desarrollo (`ng serve`) reenvía `/api` a Django.
+  - `proxy.conf.js`   -> en desarrollo (`ng serve`) reenvía `/api` a Django (por defecto puerto 8001, alineado con Docker Compose).
   - `nginx.conf`      -> en Docker, Nginx hace el mismo rol de proxy hacia `backend`.
 
 Comandos típicos:
   - `npm install` (si aún no instalaste dependencias)
-  - `npm start`   (sirve en http://localhost:4200 con proxy a http://localhost:8000)
+  - `npm start`   (sirve en http://localhost:4200 con proxy a http://127.0.0.1:8001 salvo que definas DT_API_URL)
   - `npm run build` (genera `dist/frontend` para producción)
 ================================================================================

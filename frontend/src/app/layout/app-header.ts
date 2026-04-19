@@ -8,6 +8,7 @@ import { Component, inject } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 
 import { CarritoService } from '../core/carrito.service';
+import { FavoritosService } from '../core/favoritos.service';
 
 @Component({
   selector: 'app-header',
@@ -19,6 +20,7 @@ import { CarritoService } from '../core/carrito.service';
 export class AppHeader {
   private readonly router = inject(Router);
   protected readonly carrito = inject(CarritoService);
+  protected readonly favoritos = inject(FavoritosService);
 
   protected onBuscar(event: Event): void {
     event.preventDefault();

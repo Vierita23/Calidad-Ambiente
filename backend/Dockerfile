@@ -3,6 +3,9 @@
 # Carpeta: backend/
 # Propósito: Imagen Docker del API Django (Python) con Gunicorn.
 # Etapas: una sola etapa simple para claridad en proyectos académicos.
+#
+# El entrypoint se copia fuera de `/app` y se normaliza a LF porque en Windows
+# `docker-compose` suele montar `./backend:/app` con CRLF y rompe `set -eu`.
 # =============================================================================
 FROM python:3.12-slim
 
@@ -18,10 +21,12 @@ RUN apt-get update \
 COPY requirements.txt /app/requirements.txt
 RUN pip install --no-cache-dir -r /app/requirements.txt
 
-COPY . /app
+COPY entrypoint.sh /usr/local/bin/dt-backend-entrypoint.sh
+RUN sed -i 's/\r$//' /usr/local/bin/dt-backend-entrypoint.sh \
+  && chmod +x /usr/local/bin/dt-backend-entrypoint.sh
 
-RUN chmod +x /app/entrypoint.sh
+COPY . /app
 
 EXPOSE 8000
 
-ENTRYPOINT ["/app/entrypoint.sh"]
+ENTRYPOINT ["/bin/sh", "/usr/local/bin/dt-backend-entrypoint.sh"]

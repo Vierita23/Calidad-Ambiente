@@ -15,9 +15,6 @@
     <p class="detalle__alert" role="alert">{{ mensaje }}</p>
     <a class="detalle__back" routerLink="/catalogo">Volver al catálogo</a>
   } @else if (producto(); as p) {
-    @if (feedback()) {
-      <p class="detalle__ok" role="status">{{ feedback() }}</p>
-    }
     <div class="detalle__grid">
       <div class="detalle__media">
         <img [src]="p.imagen_url" [alt]="'Foto de ' + p.nombre" loading="eager" decoding="async" referrerpolicy="no-referrer" />
@@ -38,6 +35,15 @@
         <p class="detalle__desc">{{ p.descripcion }}</p>
         <div class="detalle__actions">
           <button type="button" class="detalle__btn-cart" (click)="anadirAlCarrito()">Añadir al carrito</button>
+          <button
+            type="button"
+            class="detalle__btn-fav"
+            [class.detalle__btn-fav--on]="favoritos.tiene(p.id)"
+            (click)="toggleFavorito()"
+            [attr.aria-pressed]="favoritos.tiene(p.id)"
+          >
+            {{ favoritos.tiene(p.id) ? 'En favoritos' : 'Guardar en favoritos' }}
+          </button>
           <a class="detalle__btn-ghost" routerLink="/catalogo">Seguir comprando</a>
         </div>
         <a class="detalle__link-cart" routerLink="/carrito">Ver carrito →</a>

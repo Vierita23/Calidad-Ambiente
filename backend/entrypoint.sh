@@ -3,6 +3,8 @@
 # Archivo: entrypoint.sh
 # Carpeta: backend/
 # Propósito: Arranque del contenedor: aplica migraciones y levanta Gunicorn.
+# Nota: debe guardarse con finales de línea LF (Unix). CRLF rompe el shebang
+# en Linux cuando el directorio se monta desde Windows en Docker Compose.
 # =============================================================================
 set -eu
 

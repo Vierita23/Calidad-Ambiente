@@ -1,0 +1,36 @@
+<section class="fav page">
+  <header class="fav__head">
+    <div>
+      <h1 class="fav__title">Tus favoritos</h1>
+      <p class="fav__sub">Equipos que guardaste para ver después.</p>
+    </div>
+    <a class="fav__back" routerLink="/catalogo">Explorar catálogo →</a>
+  </header>
+
+  @if (cargando()) {
+    <div class="fav__skeleton" aria-busy="true" aria-label="Cargando">
+      @for (x of [1, 2, 3, 4]; track x) {
+        <div class="fav__sk"></div>
+      }
+    </div>
+  } @else if (error(); as err) {
+    <p class="fav__alert" role="alert">{{ err }}</p>
+  } @else if (favoritos().length === 0) {
+    <p class="fav__empty">Aún no tienes favoritos. Usa el corazón en el catálogo o en la ficha del producto.</p>
+    <a class="fav__cta" routerLink="/catalogo">Ir al catálogo</a>
+  } @else {
+    <div class="fav__grid" role="list">
+      @for (p of favoritos(); track trackPorId($index, p)) {
+        <article class="fav-card" role="listitem">
+          <a class="fav-card__media" [routerLink]="['/producto', p.id]">
+            <img [src]="p.imagen_url" [alt]="'Foto de ' + p.nombre" loading="lazy" referrerpolicy="no-referrer" />
+          </a>
+          <h2 class="fav-card__name">
+            <a [routerLink]="['/producto', p.id]">{{ p.nombre }}</a>
+          </h2>
+          <p class="fav-card__meta">{{ p.categoria_display }}</p>
+        </article>
+      }
+    </div>
+  }
+</section>

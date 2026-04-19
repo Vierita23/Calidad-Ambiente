@@ -3,7 +3,7 @@
 # Carpeta: backend/catalog/
 # Propósito: Vistas REST para consultar productos desde Angular.
 # =============================================================================
-from django.db.models import QuerySet
+from django.db.models import Q, QuerySet
 from rest_framework import mixins, viewsets
 from rest_framework.permissions import AllowAny
 
@@ -17,19 +17,42 @@ class ProductoViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets
     - GET /api/productos/        -> lista
     - GET /api/productos/{id}/   -> detalle
 
-    Nota: No implementamos creación/edición pública; eso se haría vía admin o API privada.
+    Query params (lista):
+    - `categoria`: celular | tablet | reloj | laptop
+    - `q`: texto en nombre, marca o descripción (icontains)
+    - `ordering`: -creado_en | precio | -precio | nombre | -nombre | id | -id
     """
 
     permission_classes = [AllowAny]
     serializer_class = ProductoSerializer
-    # Desactivamos paginación global solo para este ViewSet: el catálogo demo es pequeño
-    # y el frontend consume un arreglo JSON directo.
     pagination_class = None
 
+    _ordering_map = {
+        "precio": "precio",
+        "-precio": "-precio",
+        "nombre": "nombre",
+        "-nombre": "-nombre",
+        "creado_en": "creado_en",
+        "-creado_en": "-creado_en",
+        "id": "id",
+        "-id": "-id",
+    }
+
     def get_queryset(self) -> QuerySet[Producto]:
-        """Permite filtrar por categoría con `?categoria=celular`."""
         qs = Producto.objects.all()
+
         categoria = self.request.query_params.get("categoria")
         if categoria:
             qs = qs.filter(categoria=categoria)
+
+        q = (self.request.query_params.get("q") or "").strip()
+        if q:
+            qs = qs.filter(
+                Q(nombre__icontains=q) | Q(marca__icontains=q) | Q(descripcion__icontains=q),
+            )
+
+        ordering = (self.request.query_params.get("ordering") or "").strip()
+        if ordering in self._ordering_map:
+            qs = qs.order_by(self._ordering_map[ordering])
+
         return qs
