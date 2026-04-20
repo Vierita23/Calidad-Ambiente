@@ -60,12 +60,106 @@
   color: color-mix(in srgb, var(--dt-ink) 78%, transparent);
 }
 
+.filtro__field {
+  position: relative;
+  display: block;
+  border-radius: 16px;
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, white 92%, var(--dt-surface)),
+    color-mix(in srgb, white 76%, var(--dt-surface))
+  );
+  border: 1px solid color-mix(in srgb, var(--dt-ink) 12%, transparent);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, white 72%, transparent),
+    0 12px 28px color-mix(in srgb, var(--dt-primary) 8%, transparent);
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.filtro__field:hover {
+  border-color: color-mix(in srgb, var(--dt-primary) 24%, transparent);
+  transform: translateY(-1px);
+}
+
 .filtro__select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 100%;
   border-radius: 14px;
-  border: 1px solid color-mix(in srgb, var(--dt-ink) 14%, transparent);
-  padding: 0.7rem 0.8rem;
-  background: color-mix(in srgb, white 92%, var(--dt-surface));
-  box-shadow: 0 10px 30px color-mix(in srgb, var(--dt-primary) 8%, transparent);
+  border: 0;
+  padding: 0.75rem 2.65rem 0.75rem 2.55rem;
+  background: transparent;
+  box-shadow: none;
+  font-weight: 700;
+  color: var(--dt-ink);
+  cursor: pointer;
+  line-height: 1.15;
+}
+
+.filtro__select:focus {
+  outline: none;
+}
+
+.filtro__field:focus-within {
+  border-color: color-mix(in srgb, var(--dt-primary) 40%, transparent);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, white 80%, transparent),
+    0 16px 32px color-mix(in srgb, var(--dt-primary) 14%, transparent),
+    0 0 0 3px color-mix(in srgb, var(--dt-primary) 16%, transparent);
+}
+
+.filtro__icon,
+.filtro__caret {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.filtro__icon {
+  left: 0.72rem;
+  width: 1.4rem;
+  height: 1.4rem;
+  color: color-mix(in srgb, var(--dt-primary) 62%, var(--dt-ink));
+}
+
+.filtro__icon svg {
+  width: 1.08rem;
+  height: 1.08rem;
+  display: block;
+}
+
+.filtro__caret {
+  right: 0.7rem;
+  width: 1.45rem;
+  height: 1.45rem;
+  border-radius: 999px;
+  color: color-mix(in srgb, var(--dt-primary) 65%, var(--dt-ink));
+  background: color-mix(in srgb, var(--dt-primary) 9%, white);
+  transition:
+    transform 150ms ease,
+    background 150ms ease,
+    color 150ms ease;
+}
+
+.filtro__caret svg {
+  width: 0.95rem;
+  height: 0.95rem;
+  display: block;
+}
+
+.filtro__field:hover .filtro__caret,
+.filtro__field:focus-within .filtro__caret {
+  transform: translateY(-50%) scale(1.04);
+  color: white;
+  background: var(--dt-gradient);
 }
 
 .hint {
